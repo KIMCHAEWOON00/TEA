@@ -16,14 +16,14 @@
 <h2><font color="#86B404">녹차</font></h2>
 
 
-<p><a href="https://ko.wikipedia.org/wiki/%EB%85%B9%EC%B0%A8"
+<p style="background-color:#86B404;"><a href="https://ko.wikipedia.org/wiki/%EB%85%B9%EC%B0%A8"
 target="-blank" title="녹차-위키백과">
 <strong>녹차(영어: Greentea, 綠茶, 문화어: 푸른차)</strong></a>란
 발효시키지 않은, 푸른 빛이 그대로 나도록 말린 찻잎(茶葉),
 또는 찻잎을 우린 물을 말한다.</p>
 
 <h3>효능</h3>
-<ul>
+<ul style="border:3px solid green;">
 <li>항산화 효과가 높다 녹차의 건강 효과는 대부분 녹차에 많이 들어 있는 항산화제 때문이다.</li>
 <li>심장질환 위험성을 낮춘다</li>
 <li>암 발생 위험을 낮춘다 </li>
@@ -32,6 +32,21 @@ target="-blank" title="녹차-위키백과">
 <li>간 기능에 효능이 있다 </li>
 <li>피부에 좋다 </li>
 <li>운동 능력과 피로회복에 도움을 준다</li>
-<ul>
+</ul>
+
+
+
+<form action="/api/join" method="post">
+  <label>이 중 가장 좋아하는 차는?
+    <input type="radio" name="choose" value="A" />얼그레이
+    <input type="radio" name="choose" value="H" />히비스커스
+    <input type="radio" name="choose" value="G" />녹차
+  </label><br />
+  <label>이유는?<br />
+    <textarea placeholder="작성해주세요" name="textarea"></textarea><br />
+  </label>
+  <button type="submit">제출</button>
+</form>
+
 </body>
 </html>
