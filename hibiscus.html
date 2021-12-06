@@ -4,48 +4,33 @@
 <head>
         <meta charset="UTF-8">
         <title>My Favorite Tea</title>
-        <style>
-                ul {
-                          background-color: #F5A9BC;
-                          list-style-type: none;
-                          margin: 0;
-                          padding: 0;
-                          overflow: hidden;
-                }
-                li { float: left; }
-                li a {
-                          display: block;
-                          background-color: #F5A9BC;
-                          color: #000000;
-                          padding: 8px;
-                          text-decoration: none;
-                          text-algin: center;
-                          font-weight: bold;
-                }
-                li a.current {
-                          background-color: #FF6347;
-                          color: white;
-                }
-                li a:hover:not(.current) {
-                          background-color: #CD853F;
-                          color: white;
-                }
-        </style>
+        <link rel="stylesheet" href="style.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+
 </head>
 
 <body bgcolor="#FBEFF2">
-<h1><a href="index.html"><p style="text-align:center;">My Favorite Tea</p></a></h1>
+  <div>
+    <div id="title">
+      <h1>My Favorite Tea</h1>
+    </div>
 <ul>
- <li><a href="earl grey.html">얼그레이</a></li>
- <li><a href="hibiscus.html">히비스커스</a></li>
- <li><a href="green tea.html">녹차</a></li>
+ <li><a href="index.html">Home</a></li>
+ <li><a href="earl grey.html">Earl Grey</a></li>
+ <li><a class="current" a href="hibiscus.html">Hibiscus</a></li>
+ <li><a href="green tea.html">Green tea</a></li>
 </ul>
+</div>
 
-<h2><font color="#FF0040">히비스커스</font></h2>
+<h2>히비스커스</h2>
 
 <p><a href="https://ko.wikipedia.org/wiki/%EC%96%BC_%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%B0%A8"
 target="-blank" title="히비스커스-위키백과">
-<strong>무궁화속(無窮花屬, Hibiscus 히비스커스)</strong></a>은 아욱과에 속하는 속씨식물 속의 하나이다.
+<strong>무궁화속(Hibiscus)</strong></a>은 아욱과에 속하는 속씨식물 속의 하나이다.
 잎은 달걀 모양에서 피침 모양으로, 주변부는 톱니 모양인 경우도 있다.<br><br>
 꽃은 크고 나팔 모양이며 다섯 이상의 꽃잎이 있고, 색은 흰색에서 분홍색, 빨간색, 주황색, 복숭아색, 노란색, 자주색에 이르고 4~18 센티미터 너비이다.<br><br>
 부용, 틸리아세우스무궁화와 같은 일부 종의 꽃 빛깔은 시간이 지남에 따라 바뀐다.<br><br>
@@ -53,7 +38,7 @@ target="-blank" title="히비스커스-위키백과">
 양마(H. cannabinus)와 같은 무궁화속에 속하는 종은 종이 제작에 널리 사용된다.</p>
 
 <img src="hibiscus tea img.jpg" width="40%">
-<p style="background-color:#F5A9BC;"><strong>히비스커스 차</strong>는 무궁화속 두해살이풀인 로젤 열매를 말린 후 끓여 우려낸 대용차로,
+<p id="article"><strong>히비스커스 차</strong>는 무궁화속 두해살이풀인 로젤 열매를 말린 후 끓여 우려낸 대용차로,
 춥고 건조한 겨울철에 따듯한 히비스커스차를 마시면 몸을 따듯하게 해 준다.<br><br>
 히비스커스차는 이집트에서 전래된 차로 빵이나 쿠키 케이크랑 같이 마실 때 좋다. 차 자체는 당분과 식욕억제, 우울증에 좋다고 한다.<br><br>
 색은 붉은색이다. 색이 상당히 빨리 우러나는데다 그 강도가 꽤나 진해서, 찬물에 담가놔도 몇 시간만 기다리면 얼마 안 가 물이 루비색으로 빨갛게 물든 걸 볼 수 있다.<br><br>
@@ -61,7 +46,7 @@ target="-blank" title="히비스커스-위키백과">
 
 
 <h3>효능</h3>
-<ul style="background-color:#FBEFF2; border:3px solid red;">
+<ul id="efficacy">
 <li>콜레스테롤 관리 </li><br>
 <li>면역 강화 </li><br>
 <li>호르몬 균형</li><br>
@@ -95,5 +80,70 @@ target="-blank" title="히비스커스-위키백과">
   </script>
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </p>
+
+
+<div>Teachable Machine Image Model</div>
+<button type="button" onclick="init()">Start</button>
+<div id="webcam-container"></div>
+<div id="label-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "./my_model/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    }
+</script>
+
+
+
+
 </body>
 </html>

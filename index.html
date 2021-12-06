@@ -4,42 +4,27 @@
 <head>
         <meta charset="UTF-8">
         <title>My Favorite Tea</title>
-        <style>
-                ul {
-                          background-color: #F5DA81;
-                          list-style-type: none;
-                          margin: 0;
-                          padding: 0;
-                          overflow: hidden;
-                }
-                li { float: left; }
-                li a {
-                          display: block;
-                          background-color: #F5DA81;
-                          color: #000000;
-                          padding: 8px;
-                          text-decoration: none;
-                          text-algin: center;
-                          font-weight: bold;
-                }
-                li a.current {
-                          background-color: #FF6349;
-                          color: white;
-                }
-                li a:hover:not(.current) {
-                          background-color: #CD853F;
-                          color: white;
-                }
-        </style>
+        <link rel="stylesheet" href="style.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/earlyaccess/jejugothic.css" rel="stylesheet">
+
 </head>
 
-<body bgcolor="#F2F5A9">
-<h1><a href="index.html"><p style="text-align:center;">My Favorite Tea</p></a></h1>
+<body>
+  <div>
+    <div id="title">
+      <h1>My Favorite Tea</h1>
+    </div>
 <ul>
- <li><a href="earl grey.html">얼그레이</a></li>
- <li><a href="hibiscus.html">히비스커스</a></li>
- <li><a href="green tea.html">녹차</a></li>
+ <li><a class="current" href="index.html">Home</a></li>
+ <li><a href="earl grey.html">Earl Grey</a></li>
+ <li><a href="hibiscus.html">Hibiscus</a></li>
+ <li><a href="green tea.html">Green tea</a></li>
 </ul>
+ </div>
 
 <h2>TEA</h2>
 <p><iframe width="560" height="315"
@@ -47,7 +32,7 @@
   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 
-<p style="background-color:#F5DA81;"><a href="https://namu.wiki/w/%EC%B0%A8"
+<p id="article"><a href="https://namu.wiki/w/%EC%B0%A8"
 target="-blank" title="차-나무위키">
 <strong>차(茶, tea)</strong></a>는
 차나무 잎을 비롯한 식물성 재료를 우려 만드는 음료이다.
@@ -57,6 +42,7 @@ target="-blank" title="차-나무위키">
 의도적으로 카페인이 강한 찻잎을 모아 영국에서 브렉퍼스트 티처럼 이른 아침에 잠을 깨는 용도로도 마신다.<br><br>
 차는 커피와는 다르게 카테킨 성분이 있어 카페인이 체내 흡수되는 것을 줄여주기 때문에 커피보다는 카페인의 부작용에서 자유롭다.<br><br>
 카테킨은 폴리페놀이라고도 불리는데, 이 폴리페놀은 항산화 물질로서 신체 전반의 건강 및 혈관, 피부 등에 도움을 준다.</p>
+
 
 
 <!--Start of Tawk.to Script-->
@@ -72,6 +58,67 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
+
+
+
+<div style="visibility: hidden; position: absolute;" id="webcam-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/r8X8UCIeo/";
+
+    let model, webcam, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        if (prediction[0].probability > 0.5) {
+            document.querySelector('body').style.backgroundColor = 'white'
+            document.querySelector('body').style.color = 'black'
+        }
+        else {
+            document.querySelector('body').style.backgroundColor = 'black'
+            document.querySelector('body').style.color = 'white'
+        }
+    }
+    init()
+</script>
+
+
 
 </body>
 </html>
